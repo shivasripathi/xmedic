@@ -1,0 +1,15 @@
+# deployment/Dockerfile
+FROM python:3.9
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+# Copy the trained model into the container
+COPY ../models/dermatology_model.h5 ./models/dermatology_model.h5
+
+# Run the FastAPI app
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
